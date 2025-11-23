@@ -1,5 +1,6 @@
-using System.ComponentModel.DataAnnotations;
 using Internship_4_OOP.Domain.Common.Model;
+using Internship_4_OOP.Domain.Common.Validation;
+using Internship_4_OOP.Domain.Common.Validation.ValidationItems;
 
 namespace Internship_4_OOP.Domain.Entities.Users;
 
@@ -17,14 +18,21 @@ public class User
     public string? Website;
     public string Password{get; set;}
 
-    public async Task<Result<int>> Create()
+    public async Task<Result<bool>> Create()
     {
-        
+        var validationResult = await CreateOrUpdateValidation();
+        if (validationResult.HasErrors)
+        {
+            return new Result<bool>(false,validationResult);
+        }
     }
 
     public async Task<ValidationResult> CreateOrUpdateValidation()
     {
+        var validationResult = new ValidationResult();
         if (Name.Length > NameMaxLength)
-            //validacija
+            validationResult.AddValidationItem(ValidationItems.User.NameMaxLength);
+        
+        return validationResult;
     }
 }
