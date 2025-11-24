@@ -8,16 +8,35 @@ namespace Internship_4_OOP.Domain.Entities.Users;
 public class User
 {
     public const int NameMaxLength = 100;
+    
     public int Id{get; set;}
     public string Name{get; set;}
     public string Username{get; set;}
     public string Email{get; set;}
-    public string AdressStreet{get; set;}
-    public string AdressCity{get; set;}
+    public string AddressStreet{get; set;}
+    public string AddressCity{get; set;}
     public decimal GeoLatitude{get; set;}
     public decimal GeoLongitude{get; set;}
     public string? Website;
-    public string Password{get; set;}
+    private string _password = Guid.NewGuid().ToString();
+    public DateTime CreatedAt{get; set;}
+    public DateTime UpdatedAt{get; set;}
+    public bool IsActive = true;
+
+    public User(int id,string name,string username,string email,string addressStreet,string addressCity,decimal geoLatitude,decimal geoLongitude,string? website)
+    {
+        Name = name;
+        Username = username;
+        Email = email;
+        AddressStreet = addressStreet;
+        AddressCity = addressCity;
+        GeoLatitude = geoLatitude;
+        GeoLatitude = geoLatitude;
+        Website = website;
+        CreatedAt = DateTime.Now;
+        UpdatedAt = DateTime.Now;
+    }
+
 
     public async Task<Result<bool>> Create(IUserRepository userRepository)
     {

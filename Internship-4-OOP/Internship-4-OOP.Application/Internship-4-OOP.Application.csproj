@@ -1,11 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <OutputType>Library</OutputType>
         <TargetFramework>net8.0</TargetFramework>
-        <RootNamespace>Internship_4_OOP.Domain</RootNamespace>
+        <RootNamespace>Internship_4_OOP.Application</RootNamespace>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Internship-4-OOP.Domain\Internship-4-OOP.Domain.csproj" />
+    </ItemGroup>
 
 </Project>
