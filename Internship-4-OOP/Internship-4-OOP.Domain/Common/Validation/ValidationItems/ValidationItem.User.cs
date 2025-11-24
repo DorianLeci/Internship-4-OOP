@@ -8,5 +8,7 @@ public static partial class ValidationItems
 
         public static readonly ValidationItem NameMaxLength = new ValidationItem($"{CodePrefix}1",$"Ime ne smije biti duže od {User.NameMaxLength} znakova",
         ValidationSeverity.Error,ValidationType.FormalValidation);
+        
+        public static readonly 
     }
 }

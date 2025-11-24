@@ -1,16 +1,16 @@
+using Internship_4_OOP.Domain.Common.Base;
 using Internship_4_OOP.Domain.Common.Model;
 using Internship_4_OOP.Domain.Common.Validation;
 using Internship_4_OOP.Domain.Common.Validation.ValidationItems;
+using Internship_4_OOP.Domain.Events;
 using Internship_4_OOP.Domain.Persistence.User;
 
 namespace Internship_4_OOP.Domain.Entities.Users;
 
-public class User
+public class User:BaseEntity
 {
     public const int NameMaxLength = 100;
     
-    public int Id{get; set;}
-    public string Name{get; set;}
     public string Username{get; set;}
     public string Email{get; set;}
     public string AddressStreet{get; set;}
@@ -19,8 +19,7 @@ public class User
     public decimal GeoLongitude{get; set;}
     public string? Website;
     private string _password = Guid.NewGuid().ToString();
-    public DateTime CreatedAt{get; set;}
-    public DateTime UpdatedAt{get; set;}
+    
     public bool IsActive = true;
 
     public User(int id,string name,string username,string email,string addressStreet,string addressCity,decimal geoLatitude,decimal geoLongitude,string? website)
@@ -45,7 +44,8 @@ public class User
         {
             return new Result<bool>(false,validationResult);
         }
-
+        
+        AddDomainEvent(new UserCreatedEvent(this));
         await userRepository.InsertAsync(this);
         return new Result<bool>(true, validationResult);
     }
