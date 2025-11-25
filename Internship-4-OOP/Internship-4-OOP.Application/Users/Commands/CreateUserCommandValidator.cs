@@ -26,10 +26,7 @@ public class CreateUserCommandValidator: AbstractValidator<CreateUserCommand>
         
         RuleFor(request => request.Email).Required(emailVal).
             DependentRules(() =>
-            {
-                RuleFor(request => request.Email).MaxLength(emailVal, 150);
-                RuleFor(request => request.Email).EmailValidator(emailVal, repository);
-            });
+                RuleFor(request => request.Email).MaxLength(emailVal, 150));
 
         RuleFor(request => request.AddressStreet).Required(adressStreetVal)
             .DependentRules(() => RuleFor(request => request.AddressStreet).MaxLength(adressStreetVal, 150));

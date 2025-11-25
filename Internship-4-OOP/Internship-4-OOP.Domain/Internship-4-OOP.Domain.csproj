@@ -12,4 +12,10 @@
       <PackageReference Include="MediatR" Version="13.1.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Reference Include="FluentValidation">
+        <HintPath>..\..\..\..\.nuget\packages\fluentvalidation\12.1.0\lib\net8.0\FluentValidation.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
 </Project>

@@ -77,4 +77,4 @@ public static class FluentValidationExtensions
             .WithMessage($"{websiteUrl} mora biti ispravan.")
             .WithSeverity(Severity.Error);
     }
-}
+} 
