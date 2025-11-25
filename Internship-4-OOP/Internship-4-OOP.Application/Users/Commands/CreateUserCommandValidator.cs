@@ -7,11 +7,8 @@ namespace Internship_4_OOP.Application.Users.Commands;
 
 public class CreateUserCommandValidator: AbstractValidator<CreateUserCommand>
 {
-    private readonly IUserRepository _repository;
-
     public CreateUserCommandValidator(IUserRepository repository)
     {
-        _repository = repository;
         const string nameReq = "Ime korisnika";
         const string usernameReq = "Korisničko ime ";
         const string emailVal = "Email";
@@ -20,16 +17,34 @@ public class CreateUserCommandValidator: AbstractValidator<CreateUserCommand>
         const string geoLatVal = "Geografska širina";
         const string geoLongVal = "Geografska dužina";
         const string webSiteVal = "Web stranica";
+        const CascadeMode configMode = CascadeMode.Stop;
+
+        RuleFor(request => request.Name).Required(nameReq).DependentRules(()=>RuleFor(request=>request.Name).MaxLength(nameReq, 100));
+
+        RuleFor(request => request.Username).Required(usernameReq)
+            .DependentRules(() => RuleFor(request => request.Username).MaxLength(usernameReq, 30));
         
-        RuleFor(request => request.Name).Required(nameReq).MaxLength(nameReq,100);
-        RuleFor(request => request.Username).Required(usernameReq).MaxLength(usernameReq,30); 
-        RuleFor(request => request.Email).Required(emailVal).EmailValidator(emailVal, _repository);
-        RuleFor(request=>request.AddressStreet).Required(adressStreetVal).MaxLength(adressStreetVal,150);
-        RuleFor(request=>request.AddressCity).Required(adressCityVal).MaxLength(adressCityVal,100);
-        RuleFor(request => request.GeoLatitude).Required(geoLatVal).GeoCoordValidator(geoLatVal,-90m,90m);
-        RuleFor(request => request.GeoLatitude).Required(geoLongVal).GeoCoordValidator(geoLongVal,-180m,180m);
-        RuleFor(request=>request.Website).WebsiteUrlValidator(webSiteVal);
+        RuleFor(request => request.Email).Required(emailVal).
+            DependentRules(() =>
+            {
+                RuleFor(request => request.Email).MaxLength(emailVal, 150);
+                RuleFor(request => request.Email).EmailValidator(emailVal, repository);
+            });
+
+        RuleFor(request => request.AddressStreet).Required(adressStreetVal)
+            .DependentRules(() => RuleFor(request => request.AddressStreet).MaxLength(adressStreetVal, 150));
         
+        RuleFor(request=>request.AddressCity).Required(adressCityVal)
+            .DependentRules(() => RuleFor(request => request.AddressCity).MaxLength(adressCityVal,100));
+
+        RuleFor(request => request.GeoLatitude).Required(geoLatVal)
+            .DependentRules(() => RuleFor(request => request.GeoLatitude).GeoCoordValidator(geoLatVal, -90m, 90m));
+
+        RuleFor(request => request.GeoLatitude).Required(geoLongVal)
+            .DependentRules(() => RuleFor(request => request.GeoLatitude).GeoCoordValidator(geoLongVal, -180m, 180m));
+
+        RuleFor(request => request.Website).WebsiteUrlValidator(webSiteVal);
+
     }
 
         
