@@ -32,7 +32,7 @@ public class User:BaseEntity<User>
         AddressStreet = addressStreet;
         AddressCity = addressCity;
         GeoLatitude = geoLatitude;
-        GeoLatitude = geoLatitude;
+        GeoLongitude = geoLatitude;
         Website = website;
     }
     

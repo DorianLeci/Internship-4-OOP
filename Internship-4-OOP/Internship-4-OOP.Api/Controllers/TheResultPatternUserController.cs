@@ -15,9 +15,10 @@ public class TheResultPatternUserController(IMediator mediator) : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateAsync([FromBody] CreateUserDto dto)
     {
+
         var result = await mediator.Send(CreateUserCommand.FromDto(dto));
         if (result.IsFailure)
-            return BadRequest(result.Error?.Errors);
+            return BadRequest(result.Error);
         return Ok(result.Value);
     }
 }
