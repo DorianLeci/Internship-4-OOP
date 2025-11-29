@@ -3,6 +3,7 @@ using Internship_4_OOP.Application.Common.Interfaces;
 using Internship_4_OOP.Application.Users.Commands.CreateUser;
 using Internship_4_OOP.Application.Users.Commands.DeleteUserById;
 using Internship_4_OOP.Domain.Entities.Users;
+using Internship_4_OOP.Domain.Persistence.Company;
 using Internship_4_OOP.Domain.Persistence.User;
 using Internship_4_OOP.Infrastructure.Database;
 using Internship_4_OOP.Infrastructure.Database.Configuration.Companies;
@@ -27,7 +28,9 @@ public static class DependencyInjection
     private static void AddServices(this IServiceCollection services)
     {
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<ICompanyRepository, CompanyRepository>();
         services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<UserDbContext>());
+        services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<CompanyDbContext>());
     }
 
     private static IServiceCollection AddDbContext(this IServiceCollection services, IConfiguration configuration)

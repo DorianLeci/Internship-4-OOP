@@ -8,10 +8,12 @@ internal sealed class CompanyConfiguration : IEntityTypeConfiguration<Company>
     {
         public void Configure(EntityTypeBuilder<Company> builder)
         {   
-            builder.ToTable("companies");
+            builder.ToTable("companies",schema:"public");
             builder.HasKey(company => company.Id);
-            builder.Property(company => company.Id).HasColumnName("Id");
+            builder.Property(company => company.Id).HasColumnName("id");
             builder.Property(company=>company.Name).HasColumnName("name");
+            builder.Property(company=>company.CreatedAt).HasColumnName("created_at");
+            builder.Property(company=>company.UpdatedAt).HasColumnName("updated_at");
 
         }
     }

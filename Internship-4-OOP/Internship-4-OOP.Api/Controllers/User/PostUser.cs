@@ -8,7 +8,7 @@ namespace Internship_4_OOP.Api.Controllers;
 
 [ApiController]
 [Route("api/users")]
-public class TheResultPatternUserController(IMediator mediator) : ControllerBase
+public class PostUser(IMediator mediator) : ControllerBase
 {
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]

@@ -8,27 +8,12 @@ public abstract class BaseEntity<T>(string name):IAuditableEntity
     public string Name{get; set;} = name;
 
     private readonly List<BaseEvent<T>> _domainEvents = new List<BaseEvent<T>>();
-    public DateTime CreatedAt{get; protected set; }
+    public DateTime CreatedAt{get; set; }
     
-    public DateTime UpdatedAt{get; protected set; }
+    public DateTime UpdatedAt{get; set; }
     
     [NotMapped]
-    public DateTime? DeletedAt { get; protected set; } = null;
-    
-    public void SetCreatedAt()
-    {
-        CreatedAt=DateTime.Now;
-    }
-
-    public void SetUpdatedAt()
-    { 
-        UpdatedAt=DateTime.Now;
-    }
-
-    public void SetDeletedAt()
-    {
-        DeletedAt=DateTime.Now;
-    }
+    public DateTime? DeletedAt { get; set; } = null;
     
     
     [NotMapped]

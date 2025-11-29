@@ -17,7 +17,7 @@ public record CreateCompanyCommand(
 
 {
     
-    public static CreateCompanyCommand FromDto(CreateUserDto dto)
+    public static CreateCompanyCommand FromDto(CreateCompanyDto dto)
     {
         return new CreateCompanyCommand(dto.Name);
     }
@@ -35,14 +35,13 @@ public class CreateCompanyCommandHandler(ICompanyRepository companyRepository,IM
         }
 
         var newCompany = new Company(request.Name);
-
-        newCompany.AddDomainEvent(new CompanyCreatedEvent(1,"CompanyCreatedEvent",newCompany.Id,DateTimeOffset.Now,newCompany));
-        
-        await mediator.Publish(newCompany.DomainEvents.Last());
         
         await companyRepository.InsertAsync(newCompany);
         await dbContext.SaveChangesAsync(cancellationToken);
-
+        
+        newCompany.AddDomainEvent(new CompanyCreatedEvent(1,"CompanyCreatedEvent",newCompany.Id,DateTimeOffset.Now,newCompany));
+        await mediator.Publish(newCompany.DomainEvents.Last());
+        
         return Result<int,DomainError>.Success(newCompany.Id);
 
     }
