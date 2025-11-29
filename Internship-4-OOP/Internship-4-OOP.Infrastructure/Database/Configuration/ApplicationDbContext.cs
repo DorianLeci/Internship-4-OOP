@@ -10,14 +10,7 @@ public class ApplicationDbContext : DbContext,IApplicationDbContext
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     { }
-
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
-        modelBuilder.HasDefaultSchema(Schemas.Default);
-    }
-
+    
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         var trackedEntities = ChangeTracker.Entries().Where(e => e.Entity is IAuditableEntity);
@@ -43,5 +36,7 @@ public class ApplicationDbContext : DbContext,IApplicationDbContext
 
         return await base.SaveChangesAsync(cancellationToken);
     }
+
+    
     
 }

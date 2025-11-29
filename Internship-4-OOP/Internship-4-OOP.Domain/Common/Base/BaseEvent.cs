@@ -1,4 +1,5 @@
 using Internship_4_OOP.Domain.Common.Events;
+using Microsoft.EntityFrameworkCore;
 
 namespace Internship_4_OOP.Domain.Common.Base;
 using MediatR;
@@ -21,4 +22,7 @@ public abstract class BaseEvent<T>(
     public DateTimeOffset Timestamp { get; } = timestamp;
 
     public T Item { get; } = item;
+    
+
+
 }

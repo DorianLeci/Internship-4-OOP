@@ -8,10 +8,11 @@ internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {   
-        builder.ToTable("users");
+        builder.ToTable("users",schema:"public");
         builder.HasKey(user => user.Id);
         builder.Property(user => user.Id).HasColumnName("id");
         builder.Property(user=>user.Name).HasColumnName("name");
+        builder.Property(user=>user.Username).HasColumnName("username");
         builder.Property(user => user.Email).HasColumnName("email");
         builder.Property(user=>user.AddressStreet).HasColumnName("address_street");
         builder.Property(user => user.AddressCity).HasColumnName("address_city");

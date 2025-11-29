@@ -21,9 +21,7 @@ public record CreateUserCommand(
 ) : IRequest<Result<int, DomainError>>
 
 {
-    public string Password { get; } = Guid.NewGuid().ToString();
-    public bool IsActive { get; } = true;
-
+    
     public static CreateUserCommand FromDto(CreateUserDto dto)
     {
         return new CreateUserCommand(dto.Name,dto.Username,dto.Email,dto.AddressStreet,dto.AddressCity,dto.GeoLatitude,dto.GeoLongitude,dto.Website);

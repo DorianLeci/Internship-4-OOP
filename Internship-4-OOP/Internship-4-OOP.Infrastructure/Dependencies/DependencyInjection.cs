@@ -5,7 +5,7 @@ using Internship_4_OOP.Application.Users.Commands.DeleteUserById;
 using Internship_4_OOP.Domain.Entities.Users;
 using Internship_4_OOP.Domain.Persistence.User;
 using Internship_4_OOP.Infrastructure.Database;
-using Internship_4_OOP.Infrastructure.Database.Companies;
+using Internship_4_OOP.Infrastructure.Database.Configuration.Companies;
 using Internship_4_OOP.Infrastructure.Database.Configuration.Users;
 using Internship_4_OOP.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;

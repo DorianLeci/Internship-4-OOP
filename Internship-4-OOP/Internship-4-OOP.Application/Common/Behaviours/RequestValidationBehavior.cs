@@ -4,21 +4,19 @@ using ValidationException = Internship_4_OOP.Domain.Common.Exceptions.Validation
 
 namespace Internship_4_OOP.Application.Common.Behaviours;
 
-public class RequestValidationBehavior<TRequest, TResponse>(IReadOnlyList<IValidator<TRequest>> validators)
+public class RequestValidationBehavior<TRequest, TResponse>(IEnumerable<IValidator<TRequest>> validators)
     : IPipelineBehavior<TRequest, TResponse>
     where TRequest : notnull
 {
-    private readonly IReadOnlyList<IValidator<TRequest>> _validators = validators;
-
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next,
         CancellationToken cancellationToken)
     {
-        if (!_validators.Any()) return await next();
+        if (!validators.Any()) return await next();
         
         // cancellationToken.ThrowIfCancellationRequested();
         
         var context = new ValidationContext<TRequest>(request);
-        var results = await Task.WhenAll(_validators.Select(validator => validator.ValidateAsync(context)));
+        var results = await Task.WhenAll(validators.Select(validator => validator.ValidateAsync(context)));
 
         var failures = results.Where(result => !result.IsValid).SelectMany(result => result.Errors).Select(x=>x.ErrorMessage).ToList();
         // cancellationToken.ThrowIfCancellationRequested();

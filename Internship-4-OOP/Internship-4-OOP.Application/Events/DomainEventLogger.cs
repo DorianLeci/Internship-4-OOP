@@ -4,9 +4,9 @@ using Microsoft.Extensions.Logging;
 
 namespace Internship_4_OOP.Application.Events;
 
-public class DomainEventLogger<T>(ILogger<T> logger) : INotificationHandler<BaseEvent<T>>
+public class DomainEventLogger<TEvent,TItem>(ILogger<TEvent> logger) : INotificationHandler<TEvent> where TEvent:BaseEvent<TItem>
 {
-    public Task Handle(BaseEvent<T> notification, CancellationToken cancellationToken)
+    public Task Handle(TEvent notification, CancellationToken cancellationToken)
     {
        logger.LogInformation("Domain event: {EventName} {@DomainEvent}",notification.GetType().Name,notification);
        return Task.CompletedTask;

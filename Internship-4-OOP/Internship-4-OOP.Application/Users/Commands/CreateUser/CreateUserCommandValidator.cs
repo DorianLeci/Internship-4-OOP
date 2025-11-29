@@ -17,7 +17,6 @@ public class CreateUserCommandValidator: AbstractValidator<CreateUserCommand>
         const string geoLatVal = "Geografska širina";
         const string geoLongVal = "Geografska dužina";
         const string webSiteVal = "Web stranica";
-        const CascadeMode configMode = CascadeMode.Stop;
 
         RuleFor(request => request.Name).Required(nameReq).DependentRules(()=>RuleFor(request=>request.Name).MaxLength(nameReq, 100));
 

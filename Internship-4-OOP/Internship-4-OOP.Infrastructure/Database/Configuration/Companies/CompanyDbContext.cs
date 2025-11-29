@@ -1,9 +1,10 @@
+using Internship_4_OOP.Application.Common.Interfaces;
 using Internship_4_OOP.Domain.Entities.Company;
 using Microsoft.EntityFrameworkCore;
 
-namespace Internship_4_OOP.Infrastructure.Database.Companies;
+namespace Internship_4_OOP.Infrastructure.Database.Configuration.Companies;
 
-public class CompanyDbContext:DbContext
+public class CompanyDbContext:DbContext,IApplicationDbContext
 {
     public CompanyDbContext(DbContextOptions<CompanyDbContext> options) : base(options)
     {

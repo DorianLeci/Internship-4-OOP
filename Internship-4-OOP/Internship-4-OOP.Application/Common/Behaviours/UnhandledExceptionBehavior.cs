@@ -25,7 +25,7 @@ public class UnhandledExceptionBehavior<TRequest, TResponse>(ILogger<TRequest> l
             var domainError=DomainError.Validation(e.Message,e.Errors.ToList());
             var failureResult = Result<int, DomainError>.Failure(domainError);
             
-            _logger.LogError(e, "Zahtjev: neuspješna validacija: {Name} {@request}", typeof(TRequest).Name, request);
+            _logger.LogError(e, "Zahtjev: neuspješna validacija: {@request}", request);
             
             if (failureResult is TResponse response)
                 return response;
@@ -38,7 +38,7 @@ public class UnhandledExceptionBehavior<TRequest, TResponse>(ILogger<TRequest> l
             var domainError = DomainError.Unexpected(e.Message);
             var failureResult = Result<int, DomainError>.Failure(domainError);
             
-            _logger.LogError(e, "Zahtjev: neobrađena iznimka: {Name} {@request}", typeof(TRequest).Name, request);
+            _logger.LogError(e, "Zahtjev: neobrađena iznimka: {@request}", request);
 
             if (failureResult is TResponse response)
                 return response;

@@ -16,6 +16,9 @@
       <Reference Include="FluentValidation">
         <HintPath>..\..\..\..\.nuget\packages\fluentvalidation\12.1.0\lib\net8.0\FluentValidation.dll</HintPath>
       </Reference>
+      <Reference Include="Microsoft.EntityFrameworkCore">
+        <HintPath>..\..\..\..\.nuget\packages\microsoft.entityframeworkcore\8.0.22\lib\net8.0\Microsoft.EntityFrameworkCore.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 </Project>

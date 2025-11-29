@@ -26,8 +26,10 @@ public class UserRepository(UserDbContext context) : Repository<User, int>(conte
 
     public async Task<bool> ExistsUserWithinDistanceAsync(decimal lat, decimal lng, double minDistance)
     {
-        return await DbSet.AnyAsync(user => UserDistance.HevrsineDistance(user.GeoLatitude, user.GeoLongitude, lat, lng)<minDistance);
+        var users=await DbSet.ToListAsync();
+        return users.Any(user => UserDistance.HevrsineDistance(user.GeoLatitude, user.GeoLongitude, lat, lng)<minDistance);
 
     }
-    
+
+
 }

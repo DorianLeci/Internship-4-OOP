@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations.Schema;
 using Internship_4_OOP.Domain.Common.Base;
 
 namespace Internship_4_OOP.Domain.Entities.Users;
@@ -20,6 +21,7 @@ public class User:BaseEntity<User>
 
     public bool IsActive = true;
     
+    [NotMapped]
     public int CompanyId{get; set;}
 
     public User(string name,string username,string email,string addressStreet,string addressCity,decimal geoLatitude,decimal geoLongitude,string? website):

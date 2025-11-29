@@ -17,7 +17,8 @@ public static class DependencyInjection
                 cfg.AddOpenRequestPreProcessor(typeof(LoggingBehavior<>));
                 cfg.AddOpenBehavior(typeof(UnhandledExceptionBehavior<,>));
                 cfg.AddOpenBehavior(typeof(RequestValidationBehavior<,>));
-            });      
+            });    
         services.AddValidatorsFromAssemblyContaining<CreateUserCommandValidator>();
+
     }
 }

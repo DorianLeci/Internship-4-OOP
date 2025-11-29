@@ -1,10 +1,16 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Internship_4_OOP.Domain.Common.Base;
 
 public abstract class BaseEntity<T>(string name):IAuditableEntity
 {
     public int Id { get; init; }
+    
     public DateTime CreatedAt{get; protected set; }
+    
     public DateTime UpdatedAt{get; protected set; }
+    
+    [NotMapped]
     public DateTime? DeletedAt { get; protected set; } = null;
     
     public void SetCreatedAt()
@@ -26,6 +32,7 @@ public abstract class BaseEntity<T>(string name):IAuditableEntity
 
     private readonly List<BaseEvent<T>> _domainEvents = [];
     
+    [NotMapped]
     public IReadOnlyCollection<BaseEvent<T>> DomainEvents => _domainEvents.AsReadOnly();
 
     public void AddDomainEvent(BaseEvent<T> domainEvent)

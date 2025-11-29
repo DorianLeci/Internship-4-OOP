@@ -2,7 +2,7 @@ using Internship_4_OOP.Domain.Entities.Company;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Internship_4_OOP.Infrastructure.Database.Companies;
+namespace Internship_4_OOP.Infrastructure.Database.Configuration.Companies;
 
 internal sealed class CompanyConfiguration : IEntityTypeConfiguration<Company>
     {
