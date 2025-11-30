@@ -32,22 +32,28 @@ public class UserRepository(UserDbContext context,IDapperManager<User> dapperMan
 
         return await DapperManager.QuerySingleAsync(sql,new { username,password });
     }
-    
 
-    public async Task<bool> ExistsByEmailAsync(string email)
+    public async Task<User?> GetByIdAsyncWithCore(int id)
     {
-        return await DbSet.AnyAsync(user => user.Email == email);
+        return await DbSet.FirstOrDefaultAsync(user=>user.Id==id);
     }
 
-    public async Task<bool> ExistsByUsernameAsync(string username)
+
+    public async Task<bool> ExistsByEmailAsync(string email,int? excludeId = null)
     {
-        return await DbSet.AnyAsync(user=>user.Username == username);
+        return await DbSet.AnyAsync(user => user.Email == email && (!excludeId.HasValue || user.Id != excludeId));
     }
 
-    public async Task<bool> ExistsUserWithinDistanceAsync(decimal lat, decimal lng, double minDistance)
+    public async Task<bool> ExistsByUsernameAsync(string username,int? excludeId = null)
+    {
+        return await DbSet.AnyAsync(user=>user.Username == username && (!excludeId.HasValue || user.Id != excludeId));
+    }
+
+    public async Task<bool> ExistsUserWithinDistanceAsync(decimal lat, decimal lng, double minDistance,int? excludeId = null)
     {
         var users=await DbSet.ToListAsync();
-        return users.Any(user => UserDistance.HevrsineDistance(user.GeoLatitude, user.GeoLongitude, lat, lng)<minDistance);
+        return users.Any(user => UserDistance.HevrsineDistance(user.GeoLatitude, user.GeoLongitude, lat, lng)<minDistance
+        && (!excludeId.HasValue || user.Id != excludeId));
 
     }
 

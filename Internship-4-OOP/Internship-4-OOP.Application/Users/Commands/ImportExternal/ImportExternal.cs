@@ -1,4 +1,5 @@
 using Internship_4_OOP.Application.DTO;
+using Internship_4_OOP.Application.DTO.UserDto;
 using Internship_4_OOP.Application.Users.Commands.CreateUser;
 using Internship_4_OOP.Domain.Common.Model;
 using Internship_4_OOP.Domain.Entities.Users;

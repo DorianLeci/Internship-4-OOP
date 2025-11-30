@@ -1,4 +1,4 @@
-namespace Internship_4_OOP.Application.DTO;
+namespace Internship_4_OOP.Application.DTO.CompanyDto;
 
 public class CreateCompanyDto
 {

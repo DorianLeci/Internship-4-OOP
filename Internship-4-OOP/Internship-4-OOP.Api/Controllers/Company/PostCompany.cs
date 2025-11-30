@@ -1,6 +1,7 @@
 using Internship_4_OOP.Application.Companies.Commands.CreateCompany;
 using Internship_4_OOP.Application.Companies.Commands.GetCompany;
 using Internship_4_OOP.Application.DTO;
+using Internship_4_OOP.Application.DTO.CompanyDto;
 using Internship_4_OOP.Application.Users.Commands.CreateUser;
 using Internship_4_OOP.Domain.Errors;
 using MediatR;
@@ -15,6 +16,7 @@ public class PostCompany(IMediator mediator) : ControllerBase
 
     [HttpGet("{id:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ActionName(nameof(GetByIdAsync))]
     

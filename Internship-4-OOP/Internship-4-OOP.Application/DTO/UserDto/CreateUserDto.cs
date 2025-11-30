@@ -1,6 +1,4 @@
-using Internship_4_OOP.Domain.Entities.Company;
-
-namespace Internship_4_OOP.Application.DTO;
+namespace Internship_4_OOP.Application.DTO.UserDto;
 
 public class CreateUserDto
 {

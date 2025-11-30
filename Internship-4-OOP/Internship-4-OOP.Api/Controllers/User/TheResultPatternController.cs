@@ -1,11 +1,14 @@
 using Internship_4_OOP.Application.DTO;
+using Internship_4_OOP.Application.DTO.UserDto;
 using Internship_4_OOP.Application.Users.Commands.CreateUser;
 using Internship_4_OOP.Application.Users.Commands.DeleteUserById;
 using Internship_4_OOP.Application.Users.Commands.GetAllUsers;
 using Internship_4_OOP.Application.Users.Commands.GetUserById;
 using Internship_4_OOP.Application.Users.Commands.ImportExternal;
+using Internship_4_OOP.Application.Users.Commands.UpdateUser;
 using Internship_4_OOP.Application.Users.Mappers;
 using Internship_4_OOP.Application.Users.Service;
+using Internship_4_OOP.Domain.Errors;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -43,7 +46,7 @@ public class TheResultPatternController(IMediator mediator,ExternalUsersService 
         if(result.IsFailure)
             return NotFound(result.Error);
         
-        return Ok(result.Value);
+        return Ok(new {Id=result.Value});
         
     }
     
@@ -103,8 +106,29 @@ public class TheResultPatternController(IMediator mediator,ExternalUsersService 
         if (result.IsFailure)
             return NotFound(result.Error);
         
-        return Ok(result.Value);
+        return Ok(new {Id=result.Value});
         
+    }
+
+    [HttpPut("{id:int}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+
+    public async Task<IActionResult> UpdateUserAsync([FromRoute] int id,[FromBody] UpdateUserDto dto)
+    {
+        var command = UpdateUserCommand.FromDto(id, dto);
+        var result=await mediator.Send(command);
+
+        if (result.IsFailure)
+            return result.Error!.ErrorType switch
+            {
+                ErrorType.NotFound => NotFound(result.Error),
+                ErrorType.Conflict => Conflict(result.Error),
+                _ => BadRequest(result.Error)
+            };
+
+        return Ok(new { Id = result.Value });
+
     }
     
 

@@ -1,5 +1,6 @@
 using Internship_4_OOP.Application.Common;
 using Internship_4_OOP.Application.DTO;
+using Internship_4_OOP.Application.DTO.UserDto;
 
 namespace Internship_4_OOP.Application.Users.Mappers;
 

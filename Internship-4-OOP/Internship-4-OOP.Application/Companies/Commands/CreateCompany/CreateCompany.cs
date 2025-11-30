@@ -1,5 +1,6 @@
 using Internship_4_OOP.Application.Common.Interfaces;
 using Internship_4_OOP.Application.DTO;
+using Internship_4_OOP.Application.DTO.CompanyDto;
 using Internship_4_OOP.Application.Users.Commands.CreateUser;
 using Internship_4_OOP.Domain.Common.Events.Company;
 using Internship_4_OOP.Domain.Common.Model;

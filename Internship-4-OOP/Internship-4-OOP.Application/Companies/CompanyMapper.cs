@@ -1,4 +1,5 @@
 using Internship_4_OOP.Application.DTO;
+using Internship_4_OOP.Application.DTO.CompanyDto;
 using Internship_4_OOP.Domain.Entities.Company;
 
 namespace Internship_4_OOP.Application.Companies;

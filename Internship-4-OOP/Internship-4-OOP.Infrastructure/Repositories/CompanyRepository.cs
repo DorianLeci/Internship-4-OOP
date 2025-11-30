@@ -16,9 +16,14 @@ public class CompanyRepository(CompanyDbContext context,IDapperManager<Company> 
         return await DapperManager.QuerySingleAsync(sql,new { Id = id });        
     }
 
-    public async Task<bool> ExistsByNameAsync(string name)
+    public async Task<Company?> GetByIdAsyncWithCore(int id)
     {
-        return await DbSet.AnyAsync(company=>company.Name==name);        
+        return await DbSet.FirstOrDefaultAsync(c => c.Id == id);
+    }
+
+    public async Task<bool> ExistsByNameAsync(string name,int? excludeId=null)
+    {
+        return await DbSet.AnyAsync(company=>company.Name==name && (!excludeId.HasValue || company.Id!=excludeId));        
     }
     public async Task<bool> CompanyNameExistsAsync(string companyName)
     {

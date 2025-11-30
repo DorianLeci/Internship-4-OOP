@@ -1,7 +1,9 @@
+using Internship_4_OOP.Application.Abstractions;
 using Internship_4_OOP.Application.Common;
 using Internship_4_OOP.Application.Common.Interfaces;
 using Internship_4_OOP.Application.Companies.Commands.CreateCompany;
 using Internship_4_OOP.Application.DTO;
+using Internship_4_OOP.Application.DTO.UserDto;
 using Internship_4_OOP.Domain.Common.Events.User;
 using Internship_4_OOP.Domain.Common.Model;
 using Internship_4_OOP.Domain.Entities.Users;
@@ -22,7 +24,7 @@ public record CreateUserCommand(
     decimal GeoLongitude,
     string? Website,
     string CompanyName
-) : IRequest<Result<int, IDomainError>>
+) : IRequest<Result<int, IDomainError>>,IUserRequest
 
 {
     public static CreateUserCommand FromDto(CreateUserDto dto)

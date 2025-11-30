@@ -1,5 +1,6 @@
 using FluentValidation;
 using Internship_4_OOP.Application.DTO;
+using Internship_4_OOP.Application.DTO.CompanyDto;
 using Internship_4_OOP.Domain.Common.Exceptions;
 using Internship_4_OOP.Domain.Common.Model;
 using Internship_4_OOP.Domain.Errors;
