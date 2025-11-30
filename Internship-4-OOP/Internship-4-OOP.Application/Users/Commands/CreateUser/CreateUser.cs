@@ -1,9 +1,11 @@
 using Internship_4_OOP.Application.Common.Interfaces;
+using Internship_4_OOP.Application.Companies.Commands.CreateCompany;
 using Internship_4_OOP.Application.DTO;
 using Internship_4_OOP.Domain.Common.Events.User;
 using Internship_4_OOP.Domain.Common.Model;
 using Internship_4_OOP.Domain.Entities.Users;
 using Internship_4_OOP.Domain.Errors;
+using Internship_4_OOP.Domain.Persistence.Company;
 using Internship_4_OOP.Domain.Persistence.User;
 using MediatR;
 
@@ -18,18 +20,19 @@ public record CreateUserCommand(
     decimal GeoLatitude,
     decimal GeoLongitude,
     string? Website,
-    int CompanyId
+    string CompanyName
 ) : IRequest<Result<int, DomainError>>
 
 {
     public static CreateUserCommand FromDto(CreateUserDto dto)
     {
-        return new CreateUserCommand(dto.Name,dto.Username,dto.Email,dto.AddressStreet,dto.AddressCity,dto.GeoLatitude,dto.GeoLongitude,dto.Website,dto.CompanyId);
+        return new CreateUserCommand(dto.Name,dto.Username,dto.Email,dto.AddressStreet,dto.AddressCity,dto.GeoLatitude,dto.GeoLongitude,dto.Website,dto.CompanyName);
     }
 }
 
 
-public class CreateUserCommandHandler(IUserRepository userRepository,IMediator mediator,IUserDbContext dbContext) : IRequestHandler<CreateUserCommand,Result<int,DomainError>>
+public class CreateUserCommandHandler(IUserRepository userRepository,ICompanyRepository companyRepository,IMediator mediator,IUserDbContext dbContext,ICompanyDbContext companyDbContext) : 
+    IRequestHandler<CreateUserCommand,Result<int,DomainError>>
 {
 
     public async Task<Result<int,DomainError>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
@@ -48,8 +51,12 @@ public class CreateUserCommandHandler(IUserRepository userRepository,IMediator m
         {
             return Result<int, DomainError>.Failure(DomainError.Conflict("Postoji korisnik unutar 3 kilometra od trenutno unesenog."));
         }
+
+        var companyResult = await mediator.Send(new CreateCompanyCommand(request.CompanyName));
+        if (companyResult.IsFailure)
+            return companyResult;
         
-        var newUser = new User(request.Name,request.Username,request.Email,request.AddressStreet,request.AddressCity,request.GeoLatitude,request.GeoLongitude,request.Website,request.CompanyId);
+        var newUser = new User(request.Name,request.Username,request.Email,request.AddressStreet,request.AddressCity,request.GeoLatitude,request.GeoLongitude,request.Website);
         
         await userRepository.InsertAsync(newUser);
         await dbContext.SaveChangesAsync(cancellationToken);

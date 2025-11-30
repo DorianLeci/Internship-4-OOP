@@ -22,13 +22,10 @@ public class User : BaseEntity<User>
 
     public bool IsActive { get; set; } = true;
     
-    [NotMapped]
-    public int CompanyId{get; set;}
     
     public User()
     { }
-    public User(string name, string username, string email, string addressStreet, string addressCity, decimal geoLatitude, decimal geoLongitude, string? website,
-        int companyId) : base(name)
+    public User(string name, string username, string email, string addressStreet, string addressCity, decimal geoLatitude, decimal geoLongitude, string? website) : base(name)
     {
         Username = username;
         Email = email;
@@ -37,7 +34,6 @@ public class User : BaseEntity<User>
         GeoLatitude = geoLatitude;
         GeoLongitude = geoLongitude;
         Website = website;
-        CompanyId = companyId;
     }
     
 }

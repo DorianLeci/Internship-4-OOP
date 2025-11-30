@@ -13,6 +13,7 @@ public class TheResultPatternController(IMediator mediator) : ControllerBase
     [HttpGet("{id:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ActionName(nameof(GetByIdAsync))]
     public async Task<IActionResult> GetByIdAsync([FromRoute] int id)
     {
         var query = GetUserByIdQuery.FromId(id);

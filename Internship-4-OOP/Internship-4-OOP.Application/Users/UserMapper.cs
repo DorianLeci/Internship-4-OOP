@@ -5,9 +5,9 @@ namespace Internship_4_OOP.Application.Users;
 
 public static class UserMapper
 {
-    public static CreateUserDto CreateUserDto(User user)
+    public static GetUserDto GetDtoFromUser(User user)
     {
-        return new CreateUserDto
+        return new GetUserDto
         {
             Name=user.Name,
             Username = user.Username,
@@ -17,7 +17,6 @@ public static class UserMapper
             GeoLatitude = user.GeoLatitude,
             GeoLongitude = user.GeoLongitude,
             Website = user.Website,
-            CompanyId =  user.CompanyId,
         };
     }
 }

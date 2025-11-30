@@ -74,13 +74,4 @@ public static class FluentValidationExtensions
             .WithMessage($"{websiteUrl} mora biti ispravan.")
             .WithSeverity(Severity.Error);
     }
-
-    public static IRuleBuilderOptions<T, int> CompanyIdValidator<T>
-        (this IRuleBuilder<T, int> ruleBuilder,ICompanyRepository repository)
-    {
-        return ruleBuilder
-            .MustAsync(async (id, cancellationToken) => await repository.CompanyIdExistsAsync(id))
-            .WithMessage("Kompanija s danim id-om ne postoji.")
-            .WithSeverity(Severity.Error);
-    }
 } 

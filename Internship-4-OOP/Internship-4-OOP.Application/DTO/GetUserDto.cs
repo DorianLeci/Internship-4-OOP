@@ -1,8 +1,6 @@
-using Internship_4_OOP.Domain.Entities.Company;
-
 namespace Internship_4_OOP.Application.DTO;
 
-public class CreateUserDto
+public class GetUserDto
 {
     public string Name{get; set;}
     public string Username{get; set;}
@@ -12,7 +10,4 @@ public class CreateUserDto
     public decimal GeoLatitude{get; set;}
     public decimal GeoLongitude{get; set;}
     public string? Website { get; set; }
-    
-    public string CompanyName{get; set;}
-
 }

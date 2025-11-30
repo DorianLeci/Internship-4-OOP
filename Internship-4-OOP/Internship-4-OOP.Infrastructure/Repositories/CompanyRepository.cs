@@ -13,8 +13,8 @@ public class CompanyRepository(CompanyDbContext context,IDapperManager<Company> 
     {
         return await DbSet.AnyAsync(company=>company.Name==name);        
     }
-    public async Task<bool> CompanyIdExistsAsync(int companyId)
+    public async Task<bool> CompanyNameExistsAsync(string companyName)
     {
-        return await context.Companies.AnyAsync(c => c.Id == companyId);
+        return await context.Companies.AnyAsync(c => c.Name == companyName);
     }
 }

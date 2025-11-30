@@ -8,7 +8,7 @@ namespace Internship_4_OOP.Application.Users.Commands.CreateUser;
 
 public class CreateUserCommandValidator: AbstractValidator<CreateUserCommand>
 {
-    public CreateUserCommandValidator(IUserRepository userRepository,ICompanyRepository companyRepository)
+    public CreateUserCommandValidator(IUserRepository userRepository)
     {
         const string nameReq = "Ime korisnika";
         const string usernameReq = "Korisničko ime ";
@@ -46,9 +46,6 @@ public class CreateUserCommandValidator: AbstractValidator<CreateUserCommand>
 
         RuleFor(request => request.Website).MaxLengthForWebsite(webSiteVal,100).WebsiteUrlValidator(webSiteVal);
         
-        RuleFor(request=>request.CompanyId).Required(companyVal)
-            .DependentRules(()=>RuleFor(request=>request.CompanyId).CompanyIdValidator(companyRepository));
-
     }
 
         

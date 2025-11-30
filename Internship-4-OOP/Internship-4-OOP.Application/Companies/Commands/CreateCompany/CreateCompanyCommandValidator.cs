@@ -11,8 +11,12 @@ public class CreateCompanyCommandValidator: AbstractValidator<CreateCompanyComma
     {
         const string nameReq = "Ime kompanije";
 
-        RuleFor(request => request.Name).Required(nameReq).DependentRules(()=>RuleFor(request=>request.Name).
-            MaxLength(nameReq, 150));
+        RuleFor(request => request.Name).Required(nameReq).DependentRules(()=>
+        {
+            RuleFor(request => request.Name).MaxLength(nameReq, 150);
+        });
+        
+        
         
     }
 
