@@ -1,6 +1,8 @@
 using Internship_4_OOP.Application.Companies.Commands.CreateCompany;
+using Internship_4_OOP.Application.Companies.Commands.GetCompany;
 using Internship_4_OOP.Application.DTO;
 using Internship_4_OOP.Application.Users.Commands.CreateUser;
+using Internship_4_OOP.Domain.Errors;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,6 +12,29 @@ namespace Internship_4_OOP.Api.Controllers.Company;
 [Route("api/companies")]
 public class PostCompany(IMediator mediator) : ControllerBase
 {
+
+    [HttpGet("{id:int}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    
+    public async Task<IActionResult> GetByIdAsync([FromRoute] int id,[FromQuery] string username,[FromQuery] string password)
+    {
+        var query=GetCompanyByIdQuery.FromDto(id,username,password);
+        var result = await mediator.Send(query);
+
+        if (result.IsFailure)
+        {
+            return result.Error!.ErrorType switch
+            {
+                ErrorType.Unauthorized => Unauthorized(result.Error),
+                ErrorType.NotFound => NotFound(result.Error),
+                _ => BadRequest(result.Error)
+            };
+        }
+        return Ok(result.Value);
+    }
+    
+    
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

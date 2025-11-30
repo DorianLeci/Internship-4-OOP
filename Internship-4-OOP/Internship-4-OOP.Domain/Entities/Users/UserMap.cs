@@ -18,5 +18,6 @@ public class UserMap:EntityMap<User>
         Map(u=>u.CreatedAt).ToColumn("created_at");
         Map(u=>u.UpdatedAt).ToColumn("updated_at");
         Map(u=>u.Website).ToColumn("website");
+        Map(u=>u.CompanyId).ToColumn("company_id");
     }
 }

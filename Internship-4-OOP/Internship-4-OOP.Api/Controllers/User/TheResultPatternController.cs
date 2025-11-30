@@ -37,7 +37,7 @@ public class TheResultPatternController(IMediator mediator) : ControllerBase
             return BadRequest(result.Error);
 
         var createdId = result.Value;
-        return CreatedAtAction(nameof(GetByIdAsync),new {id=createdId},dto );
+        return CreatedAtAction(nameof(GetByIdAsync),new {id=createdId},new { id = createdId, dto });
     }
 
 

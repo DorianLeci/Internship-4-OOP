@@ -23,5 +23,7 @@ internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(user=>user.CreatedAt).HasColumnName("created_at");   
         builder.Property(user=>user.UpdatedAt).HasColumnName("updated_at");   
         builder.Property(user=>user.IsActive).HasColumnName("is_active");
+        builder.Property(user => user.CompanyId).HasColumnName("company_id");
+        builder.HasIndex(user => user.CompanyId).IsUnique();
     }
 }

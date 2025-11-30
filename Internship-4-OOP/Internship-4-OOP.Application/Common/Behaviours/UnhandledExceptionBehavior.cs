@@ -1,4 +1,6 @@
 using FluentValidation;
+using Internship_4_OOP.Application.DTO;
+using Internship_4_OOP.Domain.Common.Exceptions;
 using Internship_4_OOP.Domain.Common.Model;
 using Internship_4_OOP.Domain.Errors;
 using MediatR;
@@ -11,8 +13,6 @@ public class UnhandledExceptionBehavior<TRequest, TResponse>(ILogger<TRequest> l
     : IPipelineBehavior<TRequest, TResponse>
     where TRequest : notnull
 {
-    private readonly ILogger<TRequest> _logger = logger;
-
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next,
         CancellationToken cancellationToken)
     {
@@ -23,9 +23,22 @@ public class UnhandledExceptionBehavior<TRequest, TResponse>(ILogger<TRequest> l
         catch (ValidationException e)
         {
             var domainError=DomainError.Validation(e.Message,e.Errors.ToList());
-            var failureResult = Result<int, DomainError>.Failure(domainError);
+            var failureResult = Result<GetCompanyDto, IDomainError>.Failure(domainError);
             
-            _logger.LogError(e, "Zahtjev: neuspješna validacija: {@request}", request);
+            logger.LogError(e, "Zahtjev: neuspješna validacija: {@request}", request);
+            
+            if (failureResult is TResponse response)
+                return response;
+
+            throw new InvalidCastException("Response je pogrešno castan.");
+
+        }
+        catch (UnauthenticatedException e)
+        {
+            var domainError=DomainError.Unathorized(e.Message);
+            var failureResult = Result<GetCompanyDto, IDomainError>.Failure(domainError);
+            
+            logger.LogError(e, "Zahtjev: neuspješna autentifikacija korisnika: {@request}", request);
             
             if (failureResult is TResponse response)
                 return response;
@@ -38,7 +51,7 @@ public class UnhandledExceptionBehavior<TRequest, TResponse>(ILogger<TRequest> l
             var domainError = DomainError.Unexpected(e.Message);
             var failureResult = Result<int, DomainError>.Failure(domainError);
             
-            _logger.LogError(e, "Zahtjev: neobrađena iznimka: {@request}", request);
+            logger.LogError(e, "Zahtjev: neobrađena iznimka: {@request}", request);
 
             if (failureResult is TResponse response)
                 return response;

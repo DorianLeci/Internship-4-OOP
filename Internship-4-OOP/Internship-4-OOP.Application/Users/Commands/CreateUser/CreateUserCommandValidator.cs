@@ -38,11 +38,9 @@ public class CreateUserCommandValidator: AbstractValidator<CreateUserCommand>
         RuleFor(request=>request.AddressCity).Required(adressCityVal)
             .DependentRules(() => RuleFor(request => request.AddressCity).MaxLength(adressCityVal,100));
 
-        RuleFor(request => request.GeoLatitude).Required(geoLatVal)
-            .DependentRules(() => RuleFor(request => request.GeoLatitude).GeoCoordValidator(geoLatVal, -90m, 90m));
+        RuleFor(request => request.GeoLatitude).GeoCoordValidator(geoLatVal, -90m, 90m);
 
-        RuleFor(request => request.GeoLongitude).Required(geoLongVal)
-            .DependentRules(() => RuleFor(request => request.GeoLongitude).GeoCoordValidator(geoLongVal, -180m, 180m));
+        RuleFor(request => request.GeoLongitude).GeoCoordValidator(geoLongVal, -180m, 180m);
 
         RuleFor(request => request.Website).MaxLengthForWebsite(webSiteVal,100).WebsiteUrlValidator(webSiteVal);
         

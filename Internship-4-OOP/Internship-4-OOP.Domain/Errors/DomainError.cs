@@ -21,8 +21,13 @@ public record DomainError:IDomainError
         new (message?? "Neuspješna validacija.",ErrorType.Validation,errors);
 
     public static DomainError Unexpected(string? message)
-        => new(message ?? "Neočekivana pogreška se dogodila.",Domain.Errors.ErrorType.Unexecpected);
+        => new(message ?? "Neočekivana pogreška se dogodila.",ErrorType.Unexpected);
     
     public static DomainError NotFound(string? message)=>
     new(message ?? "Podatak kojeg si zatražio ne postoji.", ErrorType.NotFound);
+    
+    public static DomainError Unathorized(string? message)=>
+        new(message ?? "Podatak nije autoriziran sa pristup traženom.", ErrorType.Unauthorized);
+    
+    
 }

@@ -1,5 +1,7 @@
 using Internship_4_OOP.Domain.Common.Model;
+using Internship_4_OOP.Domain.Entities.Company;
 using Internship_4_OOP.Domain.Entities.Users;
+using Internship_4_OOP.Domain.Persistence.Company;
 using Internship_4_OOP.Domain.Persistence.User;
 using Internship_4_OOP.Infrastructure.Common;
 using Internship_4_OOP.Infrastructure.Database.Configuration.Users;
@@ -10,23 +12,20 @@ namespace Internship_4_OOP.Infrastructure.Repositories;
 
 public class UserRepository(UserDbContext context,IDapperManager<User> dapperManager) : Repository<User, int>(context,dapperManager), IUserRepository
 {
-    public async Task<User?> GetById(int id)
+    public async Task<User?> GetByIdAsync(int id)
     {
-        string sql = @"
-    SELECT
-        name AS Name,
-        username,
-        email,
-        address_street,
-        address_city,
-        geo_lat,
-        geo_lng,
-        website
-    FROM Users
-    WHERE id = @Id";
+        const string sql = "SELECT* FROM Users WHERE id = @Id";
         
         return await DapperManager.QuerySingleAsync(sql,new { Id = id });
     }
+
+    public async Task<User?> GetByUsernameAndPasswordAsync(string username,string password)
+    {
+        const string sql = "SELECT* FROM Users WHERE username = @username AND password = @password";
+
+        return await DapperManager.QuerySingleAsync(sql,new { username,password });
+    }
+    
 
     public async Task<bool> ExistsByEmailAsync(string email)
     {
@@ -45,5 +44,11 @@ public class UserRepository(UserDbContext context,IDapperManager<User> dapperMan
 
     }
 
-
+    public async Task<User?> AuthenticateAsync(string username,string password)
+    {
+        var user=await GetByUsernameAndPasswordAsync(username,password);
+            
+        return user;
+    }
+    
 }

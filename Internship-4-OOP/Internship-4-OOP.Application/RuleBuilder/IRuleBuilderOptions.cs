@@ -19,7 +19,7 @@ public static class FluentValidationExtensions
             .WithMessage($"{displayName} ne smije biti prazno.")
             .WithSeverity(Severity.Error);
     }
-
+    
     public static IRuleBuilderOptions<T, string> MaxLength<T>
         (this IRuleBuilder<T,string> ruleBuilder,string displayName,int maxLength)
     {

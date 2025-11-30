@@ -56,7 +56,9 @@ public class CreateUserCommandHandler(IUserRepository userRepository,ICompanyRep
         if (companyResult.IsFailure)
             return companyResult;
         
-        var newUser = new User(request.Name,request.Username,request.Email,request.AddressStreet,request.AddressCity,request.GeoLatitude,request.GeoLongitude,request.Website);
+        Console.WriteLine(companyResult.Value);
+        var newUser = new User(request.Name,request.Username,request.Email,request.AddressStreet,request.AddressCity,
+            request.GeoLatitude,request.GeoLongitude,request.Website,companyResult.Value);
         
         await userRepository.InsertAsync(newUser);
         await dbContext.SaveChangesAsync(cancellationToken);

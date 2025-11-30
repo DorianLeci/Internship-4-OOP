@@ -1,5 +1,6 @@
 using System.Reflection;
 using Dapper.FluentMap;
+using Internship_4_OOP.Api.Converters;
 using Internship_4_OOP.Application.Dependencies;
 using Internship_4_OOP.Domain.Entities.Users;
 using Internship_4_OOP.Infrastructure.Dependencies;
@@ -11,7 +12,7 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-        builder.Services.AddControllers();
+        builder.Services.AddControllers().AddJsonOptions(options=>options.JsonSerializerOptions.Converters.Add(new EmptyStringConverter()));
         builder.Services.AddSwaggerGen();
         builder.Services.AddAppServices();
         builder.Services.AddInfrastructure(builder.Configuration);

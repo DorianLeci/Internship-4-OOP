@@ -20,7 +20,7 @@ public record GetUserByIdQuery(int Id) : IQuery<GetUserDto>
         public async Task<Result<GetUserDto, IDomainError>> Handle(GetUserByIdQuery request,
             CancellationToken cancellationToken)
         {
-            var user=await  repository.GetById(request.Id);
+            var user=await  repository.GetByIdAsync(request.Id);
             if (user == null)
                 return Result<GetUserDto, IDomainError>.Failure(DomainError.NotFound("Korisnik kojeg si zatražio po id-u ne postoji u bazi podataka."));
             
