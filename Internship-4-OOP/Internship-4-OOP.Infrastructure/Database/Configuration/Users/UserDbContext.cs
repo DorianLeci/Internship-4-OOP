@@ -3,6 +3,7 @@ using Internship_4_OOP.Domain.Common.Base;
 using Internship_4_OOP.Domain.Entities.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Internship_4_OOP.Infrastructure.Database.Configuration.Users;
 

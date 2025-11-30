@@ -12,6 +12,7 @@ namespace Internship_4_OOP.Infrastructure.Repositories;
 
 public class UserRepository(UserDbContext context,IDapperManager<User> dapperManager) : Repository<User, int>(context,dapperManager), IUserRepository
 {
+    
     public async Task<User?> GetByIdAsync(int id)
     {
         const string sql = "SELECT* FROM Users WHERE id = @Id";

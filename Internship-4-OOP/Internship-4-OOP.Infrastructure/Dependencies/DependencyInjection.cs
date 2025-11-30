@@ -6,6 +6,7 @@ using Internship_4_OOP.Domain.Persistence.Company;
 using Internship_4_OOP.Domain.Persistence.User;
 using Internship_4_OOP.Infrastructure.Database.Configuration.Companies;
 using Internship_4_OOP.Infrastructure.Database.Configuration.Users;
+using Internship_4_OOP.Infrastructure.Database.Configuration.Users.UnitOfWork;
 using Internship_4_OOP.Infrastructure.Manager;
 using Internship_4_OOP.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -31,6 +32,7 @@ public static class DependencyInjection
         services.AddScoped<IDapperManager<Company>>(sp =>
             new CompanyDapperManager(sp.GetRequiredService<IConfiguration>().GetConnectionString("CompanyDB")!));
         
+        services.AddScoped<IUserUnitOfWork, UserUnitOfWork>();        
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<ICompanyRepository, CompanyRepository>();
         services.AddScoped<IUserDbContext>(provider => provider.GetRequiredService<UserDbContext>());

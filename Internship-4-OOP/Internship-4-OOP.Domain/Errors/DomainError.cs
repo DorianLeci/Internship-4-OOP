@@ -29,5 +29,8 @@ public record DomainError:IDomainError
     public static DomainError Unathorized(string? message)=>
         new(message ?? "Podatak nije autoriziran sa pristup traženom.", ErrorType.Unauthorized);
     
+    public static DomainError ExternalServiceError(string? message)=>
+        new(message ?? "Vanjski API nije dostupan", ErrorType.ExternalServiceError);
+    
     
 }

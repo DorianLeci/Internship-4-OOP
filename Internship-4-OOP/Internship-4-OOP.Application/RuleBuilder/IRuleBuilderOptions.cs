@@ -16,7 +16,7 @@ public static class FluentValidationExtensions
         return ruleBuilder
 
             .NotEmpty()
-            .WithMessage($"{displayName} ne smije biti prazno.")
+            .WithMessage($"Polje {displayName} ne smije biti prazno.")
             .WithSeverity(Severity.Error);
     }
     
@@ -67,11 +67,11 @@ public static class FluentValidationExtensions
             .WithSeverity(Severity.Error);
     }
     public static IRuleBuilderOptions<T,string?> WebsiteUrlValidator<T>
-        (this IRuleBuilder<T,string?> ruleBuilder,string? websiteUrl)
+        (this IRuleBuilder<T,string?> ruleBuilder)
     {
         return ruleBuilder
             .Must(url=>string.IsNullOrEmpty(url) || Uri.TryCreate(url, UriKind.Absolute,out _))
-            .WithMessage($"{websiteUrl} mora biti ispravan.")
+            .WithMessage($"Url mora biti ispravan.")
             .WithSeverity(Severity.Error);
     }
 } 

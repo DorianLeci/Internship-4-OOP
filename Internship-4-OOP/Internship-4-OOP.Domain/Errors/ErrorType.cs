@@ -9,5 +9,6 @@ public enum ErrorType
     Validation,
     Unexpected,
     NotFound,
-    Unauthorized
+    Unauthorized,
+    ExternalServiceError
 }

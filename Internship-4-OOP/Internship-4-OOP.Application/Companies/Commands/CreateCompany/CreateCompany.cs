@@ -13,7 +13,7 @@ namespace Internship_4_OOP.Application.Companies.Commands.CreateCompany;
 
 public record CreateCompanyCommand(
     string Name
-) : IRequest<Result<int, DomainError>>
+) : IRequest<Result<int, IDomainError>>
 
 {
     
@@ -23,14 +23,14 @@ public record CreateCompanyCommand(
     }
 }
 
-public class CreateCompanyCommandHandler(ICompanyRepository companyRepository,IMediator mediator,ICompanyDbContext dbContext) : IRequestHandler<CreateCompanyCommand,Result<int,DomainError>>
+public class CreateCompanyCommandHandler(ICompanyRepository companyRepository,IMediator mediator,ICompanyDbContext dbContext) : IRequestHandler<CreateCompanyCommand,Result<int,IDomainError>>
 {
 
-    public async Task<Result<int,DomainError>> Handle(CreateCompanyCommand request, CancellationToken cancellationToken)
+    public async Task<Result<int,IDomainError>> Handle(CreateCompanyCommand request, CancellationToken cancellationToken)
     {
         if (await companyRepository.ExistsByNameAsync(request.Name))
         {
-            return Result<int, DomainError>.Failure(
+            return Result<int, IDomainError>.Failure(
                 DomainError.Conflict("Već postoji kompanija s istim imenom."));
         }
 
@@ -42,7 +42,7 @@ public class CreateCompanyCommandHandler(ICompanyRepository companyRepository,IM
         newCompany.AddDomainEvent(new CompanyCreatedEvent(1,"CompanyCreatedEvent",newCompany.Id,DateTimeOffset.Now,newCompany));
         await mediator.Publish(newCompany.DomainEvents.Last());
         
-        return Result<int,DomainError>.Success(newCompany.Id);
+        return Result<int,IDomainError>.Success(newCompany.Id);
 
     }
     

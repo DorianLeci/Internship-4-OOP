@@ -22,8 +22,9 @@ public class UnhandledExceptionBehavior<TRequest, TResponse>(ILogger<TRequest> l
         }
         catch (ValidationException e)
         {
+            
             var domainError=DomainError.Validation(e.Message,e.Errors.ToList());
-            var failureResult = Result<GetCompanyDto, IDomainError>.Failure(domainError);
+            var failureResult = Result<int, IDomainError>.Failure(domainError);
             
             logger.LogError(e, "Zahtjev: neuspješna validacija: {@request}", request);
             

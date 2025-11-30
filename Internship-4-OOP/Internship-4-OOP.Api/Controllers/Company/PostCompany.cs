@@ -16,6 +16,7 @@ public class PostCompany(IMediator mediator) : ControllerBase
     [HttpGet("{id:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ActionName(nameof(GetByIdAsync))]
     
     public async Task<IActionResult> GetByIdAsync([FromRoute] int id,[FromQuery] string username,[FromQuery] string password)
     {
@@ -44,6 +45,6 @@ public class PostCompany(IMediator mediator) : ControllerBase
         var result = await mediator.Send(CreateCompanyCommand.FromDto(dto));
         if (result.IsFailure)
             return BadRequest(result.Error);
-        return Ok(result.Value);
+        return Created(string.Empty,new {result.Value,dto});
     }
 }

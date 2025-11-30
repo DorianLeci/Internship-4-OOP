@@ -1,18 +1,15 @@
-using Internship_4_OOP.Application.Common;
 using Internship_4_OOP.Application.Common.Interfaces;
 using Internship_4_OOP.Application.Companies.Commands.CreateCompany;
 using Internship_4_OOP.Application.DTO;
-using Internship_4_OOP.Domain.Common.Events.User;
 using Internship_4_OOP.Domain.Common.Model;
 using Internship_4_OOP.Domain.Entities.Users;
 using Internship_4_OOP.Domain.Errors;
-using Internship_4_OOP.Domain.Persistence.Company;
 using Internship_4_OOP.Domain.Persistence.User;
 using MediatR;
 
 namespace Internship_4_OOP.Application.Users.Commands.CreateUser;
 
-public record CreateUserCommand(
+public record CreateUserWithoutSavingCommand(
     string Name,
     string Username,
     string Email,
@@ -22,21 +19,19 @@ public record CreateUserCommand(
     decimal GeoLongitude,
     string? Website,
     string CompanyName
-) : IRequest<Result<int, IDomainError>>
+) : IRequest<Result<int,IDomainError>>
 
 {
-    public static CreateUserCommand FromDto(CreateUserDto dto)
+    public static CreateUserWithoutSavingCommand FromDto(CreateUserDto dto)
     {
-        return new CreateUserCommand(dto.Name,dto.Username,dto.Email,dto.AddressStreet,dto.AddressCity,dto.GeoLatitude,dto.GeoLongitude,UrlParser.FormatWebsite(dto.Website),dto.CompanyName);
+        return new CreateUserWithoutSavingCommand(dto.Name,dto.Username,dto.Email,dto.AddressStreet,dto.AddressCity,dto.GeoLatitude,dto.GeoLongitude,dto.Website,dto.CompanyName);
     }
 }
-
-
-public class CreateUserCommandHandler(IUserRepository userRepository,IMediator mediator,IUserDbContext dbContext,ICompanyDbContext companyDbContext) : 
-    IRequestHandler<CreateUserCommand,Result<int,IDomainError>>
+public class CreateUserWithoutSavingCommandHandler(IUserRepository userRepository,IMediator mediator,IUserDbContext dbContext,ICompanyDbContext companyDbContext) : 
+    IRequestHandler<CreateUserWithoutSavingCommand, Result<int,IDomainError>>
 {
 
-    public async Task<Result<int,IDomainError>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+    public async Task<Result<int,IDomainError>> Handle(CreateUserWithoutSavingCommand request, CancellationToken cancellationToken)
     {
         if (await userRepository.ExistsByUsernameAsync(request.Username))
         {
@@ -57,19 +52,12 @@ public class CreateUserCommandHandler(IUserRepository userRepository,IMediator m
         if (companyResult.IsFailure)
             return companyResult;
         
-        Console.WriteLine(companyResult.Value);
         var newUser = new User(request.Name,request.Username,request.Email,request.AddressStreet,request.AddressCity,
             request.GeoLatitude,request.GeoLongitude,request.Website,companyResult.Value);
         
         await userRepository.InsertAsync(newUser);
-        await dbContext.SaveChangesAsync(cancellationToken);
         
-        newUser.AddDomainEvent(new UserCreatedEvent(1,"UserCreatedEvent",newUser.Id,DateTimeOffset.Now,newUser));
-        
-        await mediator.Publish(newUser.DomainEvents.Last());
-
         return Result<int,IDomainError>.Success(newUser.Id);
 
     }
 }
-

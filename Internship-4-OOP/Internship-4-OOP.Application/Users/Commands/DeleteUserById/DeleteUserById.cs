@@ -12,7 +12,7 @@ public record DeleteUserByIdCommand(int Id) : IRequest<Result<int, DomainError>>
 
 
     
-    public class DeleteUserByIdCommandHandler(IUserRepository repository,IMediator mediator) : IRequestHandler<DeleteUserByIdCommand, Result<int, DomainError>>
+    public class DeleteUserByIdCommandHandler(IUserRepository repository,IMediator mediator,IUserDbContext dbContext) : IRequestHandler<DeleteUserByIdCommand, Result<int, DomainError>>
     {
         public async Task<Result<int, DomainError>> Handle(DeleteUserByIdCommand request,
             CancellationToken cancellationToken)
@@ -21,8 +21,9 @@ public record DeleteUserByIdCommand(int Id) : IRequest<Result<int, DomainError>>
             if (deleteUser == null)
                 return Result<int, DomainError>.Failure(DomainError.NotFound("Korisnik kojeg si zatražio da obrišeš po id-u ne postoji u bazi podataka."));   
             
+            await dbContext.SaveChangesAsync(cancellationToken);
+            
             deleteUser.AddDomainEvent(new UserDeletedEvent(3,"UserDeletedEvent",deleteUser.Id,DateTimeOffset.Now,deleteUser));
-
             await mediator.Publish(deleteUser.DomainEvents.Last());
             
             return  Result<int, DomainError>.Success(deleteUser.Id);

@@ -1,7 +1,7 @@
 using Internship_4_OOP.Application.DTO;
 using Internship_4_OOP.Domain.Entities.Users;
 
-namespace Internship_4_OOP.Application.Users;
+namespace Internship_4_OOP.Application.Users.Mappers;
 
 public static class UserMapper
 {
