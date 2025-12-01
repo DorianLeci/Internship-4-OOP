@@ -13,7 +13,10 @@ cd Internship-4-OOP.Api
 Before starting program you must create PostgreSQL database in PgAdmin.
 In this repo there are .txt files which contain instructions for creating databases and tables.
 
-If you are on mac/linux start program with ```ASPNETCORE_ENVIRONMENT=Development dotnet run```.
+If you are on mac/linux start program with 
+```
+ASPNETCORE_ENVIRONMENT=Development dotnet run
+```
 
 If you are on windows start program with 
 ```
