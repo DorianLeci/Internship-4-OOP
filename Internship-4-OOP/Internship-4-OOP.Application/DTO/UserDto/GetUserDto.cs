@@ -10,4 +10,5 @@ public class GetUserDto
     public decimal GeoLatitude{get; set;}
     public decimal GeoLongitude{get; set;}
     public string? Website { get; set; }
+    public int CompanyId { get; set; }
 }

@@ -19,7 +19,8 @@ public class Program
         builder.Services.AddInfrastructure(builder.Configuration);
         builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
         builder.Services.AddHttpClient<ExternalUsersService>();
-
+        builder.Services.AddDistributedMemoryCache();
+        
         FluentMapper.Initialize(cfg=>cfg.AddMap(new UserMap()));
         var app = builder.Build();
         if (app.Environment.IsDevelopment())

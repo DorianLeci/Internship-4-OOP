@@ -84,14 +84,11 @@ public class UserController(IMediator mediator,ExternalUsersService service) : C
         
         var createdUsers=new List<GetUserDto>();
         
-        foreach (var id in result.Value)
+        foreach (var id in result.Value!.SuccessfulIds)
         {
             var userResult=await mediator.Send(GetUserByIdQuery.FromId(id));
             
-            if (userResult.IsFailure)
-                return BadRequest(userResult.Error);
-            
-            createdUsers.Add(userResult.Value);
+            createdUsers.Add(userResult.Value!);
         }
         
         return Created("api/users/import-external",createdUsers);
@@ -160,6 +157,7 @@ public class UserController(IMediator mediator,ExternalUsersService service) : C
     [HttpPut("activate/{id:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
 
     public async Task<IActionResult> ActivateUserAsync([FromRoute] int id)
     {

@@ -17,6 +17,7 @@ public static class UserMapper
             GeoLatitude = user.GeoLatitude,
             GeoLongitude = user.GeoLongitude,
             Website = user.Website,
+            CompanyId =  user.CompanyId,
         };
     }
 }

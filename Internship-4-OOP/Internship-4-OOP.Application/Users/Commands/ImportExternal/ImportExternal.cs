@@ -9,7 +9,7 @@ using MediatR;
 
 namespace Internship_4_OOP.Application.Users.Commands.ImportExternal;
 
-public record ImportExternalUsersCommand(List <CreateUserDto> Users): IRequest<Result<List<int>, IDomainError>>
+public record ImportExternalUsersCommand(List <CreateUserDto> Users): IRequest<Result<ExternalImportResults, IDomainError>>
 
 {
     public static ImportExternalUsersCommand FromExternalDto(List <CreateUserDto> users)
@@ -17,32 +17,36 @@ public record ImportExternalUsersCommand(List <CreateUserDto> Users): IRequest<R
         return new ImportExternalUsersCommand(users);
     }
 }
-public class ImportExternalUsersCommandHandler(IUserUnitOfWork userUnitOfWork,IMediator mediator) : IRequestHandler<ImportExternalUsersCommand, Result<List<int>, IDomainError>>
+public class ImportExternalUsersCommandHandler(IUserRepository repository,IMediator mediator) : IRequestHandler<ImportExternalUsersCommand, Result<ExternalImportResults, IDomainError>>
 {
-    public async Task<Result<List<int>,IDomainError>> Handle(ImportExternalUsersCommand request, CancellationToken cancellationToken)
+    public async Task<Result<ExternalImportResults,IDomainError>> Handle(ImportExternalUsersCommand request, CancellationToken cancellationToken)
     {
         if (request.Users.Count == 0)
-            return Result<List<int>, IDomainError>.Failure(DomainError.ExternalServiceError("Nema podataka za učitati"));
+            return Result<ExternalImportResults, IDomainError>.Failure(DomainError.ExternalServiceError("Nema podataka za učitati"));
         
-        var idList=new List<int>();
-        
-        await userUnitOfWork.BeginTransactionAsync();
+        var results=new ExternalImportResults();
 
         foreach (var usr in request.Users)
         {
-            var createUserCommand = CreateUserWithoutSavingCommand.FromDto(usr);
+            var createUserCommand = CreateUserCommand.FromDto(usr);
             var result = await mediator.Send(createUserCommand);
-
-            if (result.IsFailure)
+            
+            switch (!result.IsFailure)
             {
-                await userUnitOfWork.RollbackAsync();
-                return Result<List<int>, IDomainError>.Failure(result.Error);
+                case true:
+                    results.SuccessfulIds.Add(result.Value);
+                    break;
+                case false:
+                    results.Errors.Add(result.Error!);
+                    break;
             }
             
-            idList.Add(result.Value);
         }
-        await userUnitOfWork.CommitAsync();
+
+        if (results.SuccessfulIds.Count != 0) 
+            return Result<ExternalImportResults, IDomainError>.Success(results);
         
-        return Result<List<int>, IDomainError>.Success(idList);
+        var errosToString = results.Errors.Select(err => err.ToString()).ToList();
+        return Result<ExternalImportResults, IDomainError>.Failure(DomainError.Validation("Niti jedan korisnik iz vanjskog api-a nije uspješno validiran", errosToString!));
     }
 }
