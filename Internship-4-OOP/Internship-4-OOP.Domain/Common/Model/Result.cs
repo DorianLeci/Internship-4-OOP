@@ -22,6 +22,6 @@ public class Result<TValue,TError>
         IsFailure = false;
     }
 
-    public static Result<TValue, TError> Failure(TError error) => new(error);
+    public static Result<TValue,TError> Failure(TError error) => new(error);
     public static Result<TValue, TError> Success(TValue value) => new(value);
 }

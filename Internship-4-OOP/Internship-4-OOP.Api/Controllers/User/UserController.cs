@@ -18,7 +18,7 @@ namespace Internship_4_OOP.Api.Controllers.User;
 
 [ApiController]
 [Route("api/users")]
-public class TheResultPatternController(IMediator mediator,ExternalUsersService service) : ControllerBase
+public class UserController(IMediator mediator,ExternalUsersService service) : ControllerBase
 {
     [HttpGet("{id:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]

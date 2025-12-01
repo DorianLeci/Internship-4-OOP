@@ -11,7 +11,7 @@ namespace Internship_4_OOP.Api.Controllers.Company;
 
 [ApiController]
 [Route("api/companies")]
-public class PostCompany(IMediator mediator) : ControllerBase
+public class CompanyController(IMediator mediator) : ControllerBase
 {
 
     [HttpGet("{id:int}")]
@@ -37,6 +37,21 @@ public class PostCompany(IMediator mediator) : ControllerBase
         return Ok(result.Value);
     }
     
+    [HttpGet]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ActionName(nameof(GetByIdAsync))]
+    
+    public async Task<IActionResult> GetWithoutIdAsync([FromQuery] string username,[FromQuery] string password)
+    {
+        var query=GetCompanyWithoutCompanyIdQuery.FromQuery(username,password);
+        var result = await mediator.Send(query);
+
+        if (result.IsFailure)
+            return NotFound(result.Error);
+
+        return Ok(result.Value);
+    }
     
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
