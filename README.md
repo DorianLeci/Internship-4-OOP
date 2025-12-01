@@ -1,3 +1,5 @@
+<i>Clean-Architecture backend</i>
+
 <b>Installation</b>
 
 To run this backend app you need to have the following installed on your computer:<br/><b>.NET SDK.</b> for .NET CLI(command line interface). It is availible on https://dotnet.microsoft.com/en-us/download. <br/>This project was made using <b>.NET 8.0</b>.
